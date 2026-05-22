@@ -40,8 +40,8 @@ def preprocessImage(img):
     # 確保防爆：強制將圖片等比例縮小（發票辨識通常不需超高解析度，長邊 1024 像素足矣）
     # 這樣可以大幅節省 Token 消耗，避免觸發 TPM 上限    
     w, h = img.size
-    if w >1600:
-        max_size = (1280, 1280)
+    if w >1200:
+        max_size = (1024, 1024)
         img.thumbnail(max_size, Image.LANCZOS)
     #else keep original
 
