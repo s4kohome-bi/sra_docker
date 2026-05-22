@@ -14,9 +14,9 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
 genai.configure(api_key=GEMINI_API_KEY)
 # 模型名稱回歸最穩定的字串
-model = genai.GenerativeModel("gemini-2.5-flash")
+#model = genai.GenerativeModel("gemini-2.5-flash")
 # 用輕量模型替代以避免error 429:token 數的限制
-#model = genai.GenerativeModel("gemini-2.5-flash-lite", generation_config={"response_mime_type": "application/json"}) # 強制要求純 JSON
+model = genai.GenerativeModel("gemini-2.5-flash-lite", generation_config={"response_mime_type": "application/json"}) # 強制要求純 JSON
 
 
 from services.db_service import F_STORE, F_INVOICE, F_DATE, F_AMOUNT, F_SOURCE, F_UPLOADER
