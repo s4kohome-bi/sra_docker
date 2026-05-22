@@ -75,6 +75,7 @@ def process_receipt_file(image_path, source, user_id):
     #測試用 result = getfakeresult()
     try:
         result = ai_read_invoice(image, model)
+        print(result)
         #result = getfakeresult()
         return process_result(result, source, user_id)
     except Exception as e:
