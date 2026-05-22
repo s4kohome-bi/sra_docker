@@ -47,26 +47,34 @@ def preprocessImage(img):
 
 
 def process_result(result, source, user_id):
-    if len(result.text) > 0:
+    try:    
+        if len(result.text) == 0:
+            return result 
+
         data = json.loads(result.text)
         data[F_UPLOADER] = str(user_id)
         data[F_SOURCE] = source
-    else:
-        return result.text       
 
-    if len(data.get(F_INVOICE)) < 10:
-        data["status"] = "parse fail"
-        data["message"] = "無法辨識發票號碼"
-        return data
-    elif find_duplicate(data.get(F_INVOICE)):
-        data["status"] = "duplicate"
-        data["message"] = data.get(F_INVOICE)
-    else:
-        print(data) # for debug
-        save_receipt(data)
-        data["status"] = "success"
+        if len(data.get(F_INVOICE)) < 10:
+            data["status"] = "parse fail"
+            data["message"] = "無法辨識發票號碼"
+        elif find_duplicate(data.get(F_INVOICE)):
+            data["status"] = "duplicate"
+            data["message"] = data.get(F_INVOICE)
+        else:
+            #print(data) # for debug
+            save_receipt(data)
+            data["status"] = "success"
     
-    return data
+        return data
+    except Exception as e:
+        print(result)
+        return {
+            F_UPLOADER: user_id,
+            F_SOURCE: source,
+            "status": "parse fail", 
+            "message": str(e)
+        }            
 
 def process_receipt_file(image_path, source, user_id):
     image = Image.open(image_path)
@@ -75,14 +83,14 @@ def process_receipt_file(image_path, source, user_id):
     #測試用 result = getfakeresult()
     try:
         result = ai_read_invoice(image, model)
-        print(result)
+        # print(result)  #debug
         #result = getfakeresult()
         return process_result(result, source, user_id)
     except Exception as e:
         return {
             F_UPLOADER: user_id,
             F_SOURCE: source,
-            "status": "process exception", 
+            "status": "ai exception", 
             "message": str(e)
         }    
 
