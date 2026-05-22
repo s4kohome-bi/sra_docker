@@ -61,7 +61,7 @@ def handle_image(event):
     # 1. 預設回覆訊息（確保在邏輯崩潰時仍有初始內容）
     reply = "系統處理中，請稍候..."
     try:        
-         # 【第一層 Try】：負責所有的業務邏輯（下載、AI、對獎）       
+        # 【第一層 Try】：負責所有的業務邏輯（下載、AI、對獎）       
         # --- A. 下載圖片 ---
         with ApiClient(configuration) as api_client:
             blob_api = MessagingApiBlob(api_client)

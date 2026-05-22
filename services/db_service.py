@@ -62,6 +62,7 @@ def save_receipt(data):
     conn.close()
 
 def find_duplicate(invoice):
+    print("check duplication -- debug")
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
 
